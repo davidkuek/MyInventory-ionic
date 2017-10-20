@@ -1,26 +1,27 @@
-This is a starter template for [Ionic](http://ionicframework.com/docs/) projects.
+# Project Converting to Ionic
+==============================
 
-## How to use this template
+## Prerequisities
 
-*This template does not work on its own*. The shared files for each starter are found in the [ionic2-app-base repo](https://github.com/ionic-team/ionic2-app-base).
+These instructions is for converting a project with jquery mobile framework and cordova platform to a ionic framework without changing previous platform. (Soon will change to angular).
 
-To use this template, either create a new ionic project using the ionic node.js utility, or copy the files from this repository into the [Starter App Base](https://github.com/ionic-team/ionic2-app-base).
+### Getting Started
 
-### With the Ionic CLI:
-
-Take the name after `ionic2-starter-`, and that is the name of the template to be used when using the `ionic start` command below:
-
-```bash
-$ sudo npm install -g ionic cordova
-$ ionic start myBlank blank
+1. Install ionic 
 ```
-
-Then, to run it, cd into `myBlank` and run:
-
-```bash
-$ ionic cordova platform add ios
-$ ionic cordova run ios
+npm install -g cordova ionic
 ```
+(use sudo or run as admin if permission is denied).
 
-Substitute ios for android if not on a Mac.
+2. After installed, create a ionic project
+```
+ionic start myApp blank
+```
+(can refer to [Ionic page](https://ionicframework.com/getting-started/ for more details))
+
+
+
+
+
+
 
