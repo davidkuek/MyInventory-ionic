@@ -1,5 +1,6 @@
 <ion-header>
-  <ion-navbar>
+
+  <ion-navbar color="primary">
     <ion-title>
       My Inventory
     </ion-title>
@@ -9,19 +10,33 @@
       </button>
     </ion-buttons>
   </ion-navbar>
+
 </ion-header>
 
 <ion-content padding>
-	<ion-searchbar ></ion-searchbar>
+  <ion-searchbar (ionInput)="getItems($event)" [showCancelButton]="shouldShowCancel"></ion-searchbar>
 <ion-list>
-  <ion-item>
-    <ion-thumbnail item-start>
-      <img src="assets/img/placeholder.png">
-    </ion-thumbnail>
-    <h2>Sugar</h2>
-    <p>1 pack</p>
-    <button ion-button clear item-end>View</button>
-  </ion-item>
-  
-</ion-list>
+  <ion-item-sliding *ngFor = "let item of item_array">
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="{{item[4]}}" onError="this.src='assets/img/placeholder.png';">
+      </ion-avatar>
+      <h2>{{item[1]}}</h2>
+      <p>{{item[2]}} {{item[3]}}</p>
+    </ion-item>
+
+    <ion-item-options side="right">
+      <button ion-button color="primary" (click)="edit_button_click(item[0])">
+        <ion-icon name="edit"></ion-icon>
+        Edit
+      </button>
+      <button ion-button color="danger" (click)="delete_button(item[0])">
+        <ion-icon name="delete"></ion-icon>
+        Delete
+      </button>
+    </ion-item-options>
+  </ion-item-sliding>
+  </ion-list>
 </ion-content>
+
+

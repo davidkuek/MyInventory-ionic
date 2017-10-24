@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ActionSheetController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ActionSheetController, Platform } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { DatabaseProvider } from '../../providers/database/database';
 import { HomePage } from '../home/home';
-
-
-
 /**
- * Generated class for the AddListPage page.
+ * Generated class for the EditPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -15,19 +12,30 @@ import { HomePage } from '../home/home';
 
 @IonicPage()
 @Component({
-  selector: 'page-add-list',
-  templateUrl: 'add-list.html',
+  selector: 'page-edit',
+  templateUrl: 'edit.html',
 })
-export class AddListPage {
-item = [];
-image: string;
+export class EditPage {
+
+  item = [];
+	image:any;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public alertCtrl: AlertController,
-   public actionSheetCtrl: ActionSheetController, public databaseService: DatabaseProvider) {
-  
+   public actionSheetCtrl: ActionSheetController, public databaseService: DatabaseProvider, public platform: Platform) {
 
+  this.platform.ready().then(() => {
+    this.item[0] = navParams.get('id');
+    this.item[1] = navParams.get('name');
+    this.item[2] = navParams.get('qty');
+    this.item[3] = navParams.get('unit');
+    this.item[4] = navParams.get('remark');
+    this.image = navParams.get('image');
+
+});
   }
- options: CameraOptions = {
+
+   options: CameraOptions = {
   quality: 100,
   destinationType: this.camera.DestinationType.FILE_URI,
   encodingType: this.camera.EncodingType.JPEG,
@@ -90,12 +98,10 @@ open_camera_library(){
     actionSheet.present();
   }
 
-
-
-showConfirm(){
+  showConfirm(){
     let confirm = this.alertCtrl.create({
-      title: 'Adding item..',
-      message: 'Are you sure want to add item?',
+      title: 'Editing item..',
+      message: 'Are you sure want to edit this item?',
       buttons: [
         {
           text: 'No',
@@ -106,7 +112,7 @@ showConfirm(){
         {
           text: 'Yes',
           handler: () => {
-          	this.leavePage();
+            this.leavePage();
             console.log('Yes clicked');
           }
         }
@@ -118,9 +124,12 @@ showConfirm(){
 
 leavePage(){
 
-this.databaseService.add_item(this.item[0],this.item[1],this.item[2],this.item[3],this.image).then((results) =>{
+
+this.databaseService.update_details(this.item[0],this.item[1],this.item[2],this.item[3],this.item[4],this.image).then((result)=>{
 this.navCtrl.setRoot(HomePage);
-});
+
+})
+
 this.navCtrl.pop();
 this.showAlert();
 
@@ -129,19 +138,51 @@ this.showAlert();
   showAlert() {
     let alert = this.alertCtrl.create({
       title: 'Done!',
-      subTitle: 'Your item has been added!',
+      subTitle: 'Your item has been edited!',
       buttons: ['OK']
     });
     alert.present();
   }
 
+
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddListPage');
+    console.log('ionViewDidLoad EditPage');
   }
 
 
-cancel(){
-  this.navCtrl.pop();
-}
-}
+delete_button(id){
+let confirm = this.alertCtrl.create({
+      title: 'Deleting?',
+      message: 'Are you sure you want to delete?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.databaseService.delete_details(id).then((result)=>{
+              this.navCtrl.setRoot(HomePage);
+            });
+            this.confirmDeleteAlert();
+            console.log('Yes clicked');
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
 
+  confirmDeleteAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Done!',
+      subTitle: 'Your item has been deleted!',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+}

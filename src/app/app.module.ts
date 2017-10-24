@@ -8,10 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { AddListPage } from '../pages/add-list/add-list';
+import { EditPage } from '../pages/edit/edit';
 import { Camera } from '@ionic-native/camera';
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
 import { DatabaseProvider } from '../providers/database/database';
 import { HttpModule } from '@angular/http';
+import { SQLite } from '@ionic-native/sqlite';
 
 
 
@@ -21,6 +23,7 @@ import { HttpModule } from '@angular/http';
     MyApp,
     HomePage,
     AddListPage,
+    EditPage
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,8 @@ import { HttpModule } from '@angular/http';
   entryComponents: [
     MyApp,
     HomePage,
-    AddListPage
+    AddListPage,
+    EditPage
   ],
   providers: [
     StatusBar,
@@ -40,6 +44,7 @@ import { HttpModule } from '@angular/http';
     Camera,
     ActionSheetController,
     SQLitePorter,
+    SQLite,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DatabaseProvider
     

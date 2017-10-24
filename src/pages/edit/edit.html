@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Add Item</ion-title>
+    <ion-title>Edit Item</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -27,17 +27,17 @@
 
   <ion-item>
     <ion-label>Name</ion-label>
-    <ion-input type="text" [(ngModel)]="item[0]" name="name"></ion-input>
+    <ion-input type="text" [(ngModel)]="item[1]" name="name"></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label>Quantity Left</ion-label>
-    <ion-input type="number" [(ngModel)]="item[1]" name="quantity"></ion-input>
+    <ion-input type="number" [(ngModel)]="item[2]" name="quantity"></ion-input>
   </ion-item>
 
     <ion-item>
     <ion-label>Unit</ion-label>
-    <ion-select [(ngModel)]="item[2]" name="unit">
+    <ion-select [(ngModel)]="item[3]" name="unit">
       <ion-option value="1">Piece(s)</ion-option>
       <ion-option value="2">Pack(s)</ion-option>
       <ion-option value="3">Bottle(s)</ion-option>
@@ -46,14 +46,14 @@
 
     <ion-item>
     <ion-label>Remark</ion-label>
-    <ion-textarea type="text" [(ngModel)]="item[3]" name="remark"></ion-textarea>
+    <ion-textarea type="text" [(ngModel)]="item[4]" name="remark"></ion-textarea>
   </ion-item>
 
 </ion-list>
 
 <div padding>
-  <button ion-button full color="secondary" (click)="showConfirm()">Add</button>
-  <button ion-button full color ="danger" (click)="cancel()">Cancel</button>
+  <button ion-button full color="secondary" (click)="showConfirm()">Edit</button>
+  <button ion-button full color="danger" (click)="delete_button(item[0])">Delete</button>
 </div>
   </ion-card-content>
 </ion-card>
