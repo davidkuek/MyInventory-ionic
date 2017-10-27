@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, ActionSheetContro
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { DatabaseProvider } from '../../providers/database/database';
 import { HomePage } from '../home/home';
+import { FileSystemProvider } from '../../providers/file-system/file-system';
 /**
  * Generated class for the EditPage page.
  *
@@ -22,7 +23,8 @@ export class EditPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public alertCtrl: AlertController,
-   public actionSheetCtrl: ActionSheetController, public databaseService: DatabaseProvider, public platform: Platform) {
+   public actionSheetCtrl: ActionSheetController, public databaseService: DatabaseProvider, public platform: Platform
+   ,public fileService: FileSystemProvider) {
 
   this.platform.ready().then(() => {
     this.item[0] = navParams.get('id');
@@ -73,7 +75,8 @@ open_camera_library(){
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Modify your photo',
       buttons: [
-        {
+        { 
+          icon: 'camera',
           text: 'Take photo',
           role: 'destructive',
           handler: () => {
@@ -81,12 +84,14 @@ open_camera_library(){
             console.log('Take photo button clicked');
           }
         },{
+          icon: 'images',
           text: 'Choose from library',
           handler: () => {
           	this.open_camera_library();
             console.log('Choose from library');
           }
         },{
+          icon: 'close',
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
@@ -167,6 +172,8 @@ let confirm = this.alertCtrl.create({
             this.databaseService.delete_details(id).then((result)=>{
               this.navCtrl.setRoot(HomePage);
             });
+            this.fileService.deleteFile(this.image);
+            this.fileService.deleteCacheFile(this.image);
             this.confirmDeleteAlert();
             console.log('Yes clicked');
           }

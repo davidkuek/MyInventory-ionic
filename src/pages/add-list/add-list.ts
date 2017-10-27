@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, AlertController, ActionSheetContro
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { DatabaseProvider } from '../../providers/database/database';
 import { HomePage } from '../home/home';
+import { FileSystemProvider } from '../../providers/file-system/file-system';
+
 
 
 
@@ -22,8 +24,9 @@ export class AddListPage {
 item = [];
 image: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public alertCtrl: AlertController,
-   public actionSheetCtrl: ActionSheetController, public databaseService: DatabaseProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera,
+   public alertCtrl: AlertController,public actionSheetCtrl: ActionSheetController, 
+   public databaseService: DatabaseProvider,public fileService: FileSystemProvider) {
   
 
   }
@@ -32,7 +35,8 @@ image: string;
   destinationType: this.camera.DestinationType.FILE_URI,
   encodingType: this.camera.EncodingType.JPEG,
   mediaType: this.camera.MediaType.PICTURE,
-  sourceType: this.camera.PictureSourceType.CAMERA
+  sourceType: this.camera.PictureSourceType.CAMERA,
+  correctOrientation: true
 }
 
 cameraButton(){
@@ -66,6 +70,7 @@ open_camera_library(){
       title: 'Modify your photo',
       buttons: [
         {
+          icon: 'camera',
           text: 'Take photo',
           role: 'destructive',
           handler: () => {
@@ -73,12 +78,14 @@ open_camera_library(){
             console.log('Take photo button clicked');
           }
         },{
+          icon: 'images',
           text: 'Choose from library',
           handler: () => {
           	this.open_camera_library();
             console.log('Choose from library');
           }
         },{
+          icon: 'close',
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
@@ -113,6 +120,8 @@ showConfirm(){
       ]
     });
     confirm.present();
+
+
   }
 
 
@@ -121,6 +130,7 @@ leavePage(){
 this.databaseService.add_item(this.item[0],this.item[1],this.item[2],this.item[3],this.image).then((results) =>{
 this.navCtrl.setRoot(HomePage);
 });
+this.fileService.copyFile(this.image);
 this.navCtrl.pop();
 this.showAlert();
 
@@ -143,5 +153,8 @@ this.showAlert();
 cancel(){
   this.navCtrl.pop();
 }
+
+
 }
+
 

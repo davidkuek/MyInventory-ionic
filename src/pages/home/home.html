@@ -22,7 +22,7 @@
         <img src="{{item[4]}}" onError="this.src='assets/img/placeholder.png';">
       </ion-avatar>
       <h2>{{item[1]}}</h2>
-      <p>{{item[2]}} {{item[3]}}</p>
+      <p>{{item[2]}} {{item[3]}}(s)</p>
     </ion-item>
 
     <ion-item-options side="right">
@@ -37,6 +37,11 @@
     </ion-item-options>
   </ion-item-sliding>
   </ion-list>
+
+ <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+   <ion-infinite-scroll-content></ion-infinite-scroll-content>
+ </ion-infinite-scroll>
+
 </ion-content>
 
 

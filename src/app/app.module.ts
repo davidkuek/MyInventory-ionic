@@ -3,7 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule, ActionSheetController } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, RequiredValidator } from '@angular/forms';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -14,6 +14,8 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter';
 import { DatabaseProvider } from '../providers/database/database';
 import { HttpModule } from '@angular/http';
 import { SQLite } from '@ionic-native/sqlite';
+import { FileSystemProvider } from '../providers/file-system/file-system';
+import { File } from '@ionic-native/file';
 
 
 
@@ -46,7 +48,10 @@ import { SQLite } from '@ionic-native/sqlite';
     SQLitePorter,
     SQLite,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DatabaseProvider
+    DatabaseProvider,
+    FileSystemProvider,
+    RequiredValidator,
+    File
     
   ]
 })
