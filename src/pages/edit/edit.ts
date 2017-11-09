@@ -19,7 +19,7 @@ import { FileSystemProvider } from '../../providers/file-system/file-system';
 export class EditPage {
 
   item = [];
-	image:any;
+  image:any;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public alertCtrl: AlertController,
@@ -57,18 +57,18 @@ this.camera.getPicture(this.options).then((imageUri) => {
 
 
 open_camera_library(){
-	var options = {
-		sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-		destinationType: this.camera.DestinationType.DATA_URL,
-		mediaType: this.camera.MediaType.PICTURE
-	};
-	this.camera.getPicture(options).then((imageData) =>{
-	this.image= 'data:image/jpeg;base64,' + imageData;
+  var options = {
+    sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    mediaType: this.camera.MediaType.PICTURE
+  };
+  this.camera.getPicture(options).then((imageData) =>{
+  this.image= 'data:image/jpeg;base64,' + imageData;
 
-	},
-	(err) =>{
-		console.log('Open photo library error') + err;
-	});
+  },
+  (err) =>{
+    console.log('Open photo library error') + err;
+  });
 }
 
  presentActionSheet() {
@@ -80,14 +80,14 @@ open_camera_library(){
           text: 'Take photo',
           role: 'destructive',
           handler: () => {
-          	this.cameraButton();
+            this.cameraButton();
             console.log('Take photo button clicked');
           }
         },{
           icon: 'images',
           text: 'Choose from library',
           handler: () => {
-          	this.open_camera_library();
+            this.open_camera_library();
             console.log('Choose from library');
           }
         },{
