@@ -9,6 +9,7 @@ import { FileSystemProvider } from '../../providers/file-system/file-system';
 
 
 
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -28,10 +29,28 @@ export class HomePage {
 
   this.platform.ready().then(() => {
     this.databaseService.database_init();
-    this.appInit();
+    this.getting_item_count();
+      this.databaseService.display_database().then((result) => {
+
+        if (this.total_count>10) {
+           for (let i = 0; i < 10; i++) {
+               this.item_array.push(result[i]);
+           }
+         }
+
+         else{
+           for (let i = 0; i < this.total_count; i++) {
+             this.item_array.push(result[i]);
+           }
+         }
+    },(error) =>{
+      console.log(error);
+    });
 
 });
   }
+
+
 
     add_list() {
     this.navCtrl.push(AddListPage);
@@ -120,29 +139,34 @@ let confirm = this.alertCtrl.create({
   }
 
 
-loadItemList(start, result){
-
-
-    let end = start + 10;
-    let itemVisibleLength = this.item_array.length;
+// loadItemList(start, result){
+  
+//   this.getting_item_count();
+//     let end = start + 10;
+//     let itemVisibleLength = this.total_count;
+//     console.log(start)
+//     console.log('item length: ' + itemVisibleLength)
+//     console.log(result)
+//     console.log('item result: ' + this.item_array)
     
-    if(itemVisibleLength > end){
-        for(let i=start; i < end; i++){
-            this.item_array.push(result[i]);
-        }
-    }else{
-        for(let i=start; i < itemVisibleLength; i++){
-           this.item_array.push(result[i]);
-        }
-}
-}
+//     if(itemVisibleLength > end){
+//         for(let i=start; i <= end; i++){
+//             this.item_array.push(result[i]);
+//             console.log('1')
+//         }
+//     }else{
+//         for(let i=start; i <= itemVisibleLength; i++){
+//            this.item_array.push(result[i]);
+//            console.log('2')
+//         }
+// }
+// }
 
 
   getItems(ev: any) {
 
     let val = ev.target.value;
     this.item_array.length = 0;
-    
     this.getting_item_count();
     if (val && val.trim() != '') {
           this.databaseService.search_item_list(val).then((result)=>{
@@ -162,27 +186,6 @@ loadItemList(start, result){
   else{
     this.navCtrl.setRoot(HomePage);
   }
-  }
-
-  appInit(){
-
-      this.item_array.length = 0;
-        
-      this.databaseService.display_database().then((result) => {
-        
-        let min = 0;
-        let max = min + 10;
-      
-      for (var i = min; i < max; i++) {
-        this.item_array.push(result[i]);
-
-       
-      }
-
-      
-    },(error) =>{
-      console.log(error);
-    });
   }
 
   getting_item_count(){
