@@ -14,30 +14,32 @@
 
 
 <ion-content padding>
-
 <ion-card >
 <button ion-button icon-right icon-only (click)="presentActionSheet()">
   <ion-icon name="create"></ion-icon>
 </button>
-  <img src="{{image}}" onError="this.src='assets/img/placeholder.png';"/>
+  <img src="{{image}}" onError="this.src='assets/imgs/placeholder.png';"/>
  
 
   <ion-card-content>
+    
 <ion-list>
 
+<form [formGroup]="myGroup">
   <ion-item>
-    <ion-label>Name</ion-label>
-    <ion-input type="text" [(ngModel)]="item[0]" name="name" ngModel required></ion-input>
-  </ion-item>
 
+    <ion-label>Name</ion-label>
+    <ion-input type="text" formControlName = "name" ></ion-input>
+    
+  </ion-item>
   <ion-item>
     <ion-label>Quantity Left</ion-label>
-    <ion-input type="number" [(ngModel)]="item[1]" name="quantity"></ion-input>
+    <ion-input type="number" formControlName = "quantity"></ion-input>
   </ion-item>
 
     <ion-item>
     <ion-label>Unit</ion-label>
-    <ion-select [(ngModel)]="item[2]" name="unit">
+    <ion-select formControlName = "unit">
       <ion-option value="1">Piece(s)</ion-option>
       <ion-option value="2">Pack(s)</ion-option>
       <ion-option value="3">Bottle(s)</ion-option>
@@ -46,13 +48,14 @@
 
     <ion-item>
     <ion-label>Remark</ion-label>
-    <ion-textarea type="text" [(ngModel)]="item[3]" name="remark"></ion-textarea>
+    <ion-textarea type="text"  name="remark"></ion-textarea>
   </ion-item>
-
+</form>
 </ion-list>
 
+
 <div padding>
-  <button ion-button full color="secondary" (click)="showConfirm()">Add</button>
+  <button ion-button full color="secondary" (click)="save()">Add</button>
   <button ion-button full color ="danger" (click)="cancel()">Cancel</button>
 </div>
   </ion-card-content>
