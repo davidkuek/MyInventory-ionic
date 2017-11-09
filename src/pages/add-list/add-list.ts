@@ -4,6 +4,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { DatabaseProvider } from '../../providers/database/database';
 import { HomePage } from '../home/home';
 import { FileSystemProvider } from '../../providers/file-system/file-system';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 
@@ -23,11 +24,19 @@ import { FileSystemProvider } from '../../providers/file-system/file-system';
 export class AddListPage {
 item = [];
 image: string;
+myGroup: FormGroup;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera,
    public alertCtrl: AlertController,public actionSheetCtrl: ActionSheetController, 
-   public databaseService: DatabaseProvider,public fileService: FileSystemProvider) {
+   public databaseService: DatabaseProvider,public fileService: FileSystemProvider,
+   public formBuilder : FormBuilder) {
   
+
+     this.myGroup = formBuilder.group({
+        name: ['', Validators.required],
+        quantity:['', Validators.required],
+        unit:['', Validators.required]
+    });
 
   }
  options: CameraOptions = {
@@ -51,18 +60,18 @@ this.camera.getPicture(this.options).then((imageUri) => {
 
 
 open_camera_library(){
-	var options = {
-		sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-		destinationType: this.camera.DestinationType.DATA_URL,
-		mediaType: this.camera.MediaType.PICTURE
-	};
-	this.camera.getPicture(options).then((imageData) =>{
-	this.image= 'data:image/jpeg;base64,' + imageData;
+  var options = {
+    sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    mediaType: this.camera.MediaType.PICTURE
+  };
+  this.camera.getPicture(options).then((imageData) =>{
+  this.image= 'data:image/jpeg;base64,' + imageData;
 
-	},
-	(err) =>{
-		console.log('Open photo library error') + err;
-	});
+  },
+  (err) =>{
+    console.log('Open photo library error') + err;
+  });
 }
 
  presentActionSheet() {
@@ -74,14 +83,14 @@ open_camera_library(){
           text: 'Take photo',
           role: 'destructive',
           handler: () => {
-          	this.cameraButton();
+            this.cameraButton();
             console.log('Take photo button clicked');
           }
         },{
           icon: 'images',
           text: 'Choose from library',
           handler: () => {
-          	this.open_camera_library();
+            this.open_camera_library();
             console.log('Choose from library');
           }
         },{
@@ -113,7 +122,7 @@ showConfirm(){
         {
           text: 'Yes',
           handler: () => {
-          	this.leavePage();
+            this.leavePage();
             console.log('Yes clicked');
           }
         }
@@ -132,15 +141,15 @@ this.navCtrl.setRoot(HomePage);
 });
 this.fileService.copyFile(this.image);
 this.navCtrl.pop();
-this.showAlert();
+this.showAlert('Done','Your item has been added!',['OK']);
 
 }
 
-  showAlert() {
+  showAlert(title,subtitle,button) {
     let alert = this.alertCtrl.create({
-      title: 'Done!',
-      subTitle: 'Your item has been added!',
-      buttons: ['OK']
+      title: title,
+      subTitle: subtitle,
+      buttons: button
     });
     alert.present();
   }
@@ -154,7 +163,26 @@ cancel(){
   this.navCtrl.pop();
 }
 
+save(){
+ 
+    
+ 
+    if(!this.myGroup.valid){
+        console.log('invalid');
+        this.showAlert('Oops..','Please give more info.',['OK']);
+    }
+    
+    else {
+        console.log("success!");
+        this.item[0] = this.myGroup.value.name;
+        this.item[1] = this.myGroup.value.quantity;
+        this.item[2] = this.myGroup.value.unit;
+        this.showConfirm();
 
+        
+    }
+ 
+}
 }
 
 
