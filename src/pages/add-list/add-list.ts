@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ActionSheetController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ActionSheetController, Platform} from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { DatabaseProvider } from '../../providers/database/database';
 import { HomePage } from '../home/home';
@@ -23,20 +23,40 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AddListPage {
 item = [];
-image: string;
+image: any;
 myGroup: FormGroup;
+isIos = false;
+isAndroid = false;
+
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera,
    public alertCtrl: AlertController,public actionSheetCtrl: ActionSheetController, 
    public databaseService: DatabaseProvider,public fileService: FileSystemProvider,
-   public formBuilder : FormBuilder) {
+   public formBuilder : FormBuilder, public platform : Platform) {
   
 
      this.myGroup = formBuilder.group({
         name: ['', Validators.required],
         quantity:['', Validators.required],
         unit:['', Validators.required]
+
+
     });
+
+
+	if (this.platform.is('ios')) {
+		this.isIos = true;
+		this.isAndroid = false;
+		console.log('ios');
+
+	}
+	else if (this.platform.is('android')) {
+		this.isAndroid = true;
+		this.isIos = false;
+		console.log('android');
+	}
+
 
   }
  options: CameraOptions = {
@@ -50,7 +70,14 @@ myGroup: FormGroup;
 
 cameraButton(){
 this.camera.getPicture(this.options).then((imageUri) => {
- this.image = imageUri;
+
+	if (this.isAndroid == true) {
+		this.image = imageUri;
+	}
+	else if (this.isIos == true) {
+		 this.image = imageUri.replace(/^file:\/\//, '');
+	}
+
 
 }, (err) => {
  
@@ -81,7 +108,6 @@ open_camera_library(){
         {
           icon: 'camera',
           text: 'Take photo',
-          role: 'destructive',
           handler: () => {
             this.cameraButton();
             console.log('Take photo button clicked');
@@ -183,6 +209,8 @@ save(){
     }
  
 }
+
+
 }
 
 

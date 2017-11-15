@@ -20,6 +20,9 @@ export class EditPage {
 
   item = [];
   image:any;
+  isIos : boolean;
+  isAndroid : boolean;
+  oldImage: any;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public alertCtrl: AlertController,
@@ -33,8 +36,23 @@ export class EditPage {
     this.item[3] = navParams.get('unit');
     this.item[4] = navParams.get('remark');
     this.image = navParams.get('image');
+    this.oldImage = navParams.get('image');
 
 });
+
+
+	if (this.platform.is('ios')) {
+		this.isIos = true;
+		this.isAndroid = false;
+		console.log('ios');
+
+	}
+	else if (this.platform.is('android')) {
+		this.isAndroid = true;
+		this.isIos = false;
+		console.log('android');
+	}
+
   }
 
    options: CameraOptions = {
@@ -46,8 +64,15 @@ export class EditPage {
 }
 
 cameraButton(){
+
 this.camera.getPicture(this.options).then((imageUri) => {
- this.image = imageUri;
+	if (this.isAndroid == true) {
+		this.image = imageUri;
+	}
+	else if (this.isIos == true) {
+		 this.image = imageUri.replace(/^file:\/\//, '');
+	}
+
 
 }, (err) => {
  
@@ -78,7 +103,6 @@ open_camera_library(){
         { 
           icon: 'camera',
           text: 'Take photo',
-          role: 'destructive',
           handler: () => {
             this.cameraButton();
             console.log('Take photo button clicked');
@@ -130,10 +154,26 @@ open_camera_library(){
 leavePage(){
 
 
-this.databaseService.update_details(this.item[0],this.item[1],this.item[2],this.item[3],this.item[4],this.image).then((result)=>{
-this.navCtrl.setRoot(HomePage);
+if (this.image == this.oldImage) {
+	this.databaseService.update_details(this.item[0],this.item[1],this.item[2],this.item[3],this.item[4],this.oldImage)
+	.then((result)=>{
+		this.navCtrl.setRoot(HomePage);
+
+	});
+}
+
+else{
+	this.fileService.copyFile(this.image);
+	this.fileService.deleteCacheFile(this.oldImage);
+	this.fileService.deleteFile(this.oldImage);
+	this.databaseService.update_details(this.item[0],this.item[1],this.item[2],this.item[3],this.item[4],this.image)
+	.then((result)=>{
+		this.navCtrl.setRoot(HomePage);
 
 })
+}
+
+
 
 this.navCtrl.pop();
 this.showAlert();

@@ -5,57 +5,58 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar color="primary">
-    <ion-title>Edit Item</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
-<ion-card >
-<button ion-button icon-right icon-only (click)="presentActionSheet()">
-  <ion-icon name="create"></ion-icon>
-</button>
-  <img src="{{image}}" onError="this.src='assets/imgs/placeholder.png';"/>
- 
-
-  <ion-card-content>
-<ion-list>
-
-  <ion-item>
-    <ion-label>Name</ion-label>
-    <ion-input type="text" [(ngModel)]="item[1]" name="name"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label>Quantity Left</ion-label>
-    <ion-input type="number" [(ngModel)]="item[2]" name="quantity"></ion-input>
-  </ion-item>
-
+  
+    <ion-navbar color="primary">
+      <ion-title>Edit Item</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content padding>
+  
+  <ion-card >
+  <button ion-button icon-right icon-only (click)="presentActionSheet()">
+    <ion-icon name="create"></ion-icon>
+  </button>
+    <img src="{{image}}" onError="this.src='assets/img/placeholder.png';"/>
+   
+  
+    <ion-card-content>
+  <ion-list>
+  
     <ion-item>
-    <ion-label>Unit</ion-label>
-    <ion-select [(ngModel)]="item[3]" name="unit">
-      <ion-option value="1">Piece(s)</ion-option>
-      <ion-option value="2">Pack(s)</ion-option>
-      <ion-option value="3">Bottle(s)</ion-option>
-    </ion-select>
-  </ion-item>
-
+      <ion-label>Name</ion-label>
+      <ion-input type="text" [(ngModel)]="item[1]" name="name"></ion-input>
+    </ion-item>
+  
     <ion-item>
-    <ion-label>Remark</ion-label>
-    <ion-textarea type="text" [(ngModel)]="item[4]" name="remark"></ion-textarea>
-  </ion-item>
-
-</ion-list>
-
-<div padding>
-  <button ion-button full color="secondary" (click)="showConfirm()">Edit</button>
-  <button ion-button full color="danger" (click)="delete_button(item[0])">Delete</button>
-</div>
-  </ion-card-content>
-</ion-card>
-
-</ion-content>
+      <ion-label>Quantity Left</ion-label>
+      <ion-input type="number" min="0" inputmode="numeric" pattern="[0-9]*" title="non-negative integral number" [(ngModel)]="item[2]" name="quantity"></ion-input>
+    </ion-item>
+  
+      <ion-item>
+      <ion-label>Unit</ion-label>
+      <ion-select [(ngModel)]="item[3]" name="unit">
+        <ion-option value="1">Piece(s)</ion-option>
+        <ion-option value="2">Pack(s)</ion-option>
+        <ion-option value="3">Bottle(s)</ion-option>
+      </ion-select>
+    </ion-item>
+  
+      <ion-item>
+      <ion-label>Remark</ion-label>
+      <ion-textarea type="text" [(ngModel)]="item[4]" name="remark"></ion-textarea>
+    </ion-item>
+  
+  </ion-list>
+  
+  <div padding>
+    <button ion-button full color="secondary" (click)="showConfirm()">Edit</button>
+    <button ion-button full color="danger" (click)="delete_button(item[0])">Delete</button>
+  </div>
+    </ion-card-content>
+  </ion-card>
+  
+  </ion-content>
+  

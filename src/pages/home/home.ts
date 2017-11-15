@@ -28,6 +28,7 @@ export class HomePage {
 
 
   this.platform.ready().then(() => {
+
     this.databaseService.database_init();
     this.getting_item_count();
       this.databaseService.display_database().then((result) => {
@@ -194,4 +195,6 @@ let confirm = this.alertCtrl.create({
       
     })
   }
+
+
 }

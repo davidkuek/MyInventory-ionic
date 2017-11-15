@@ -183,6 +183,7 @@ update_details(id,name,qty,uom,remark,image){
           db.executeSql(query,[name,qty,uom,remark,image,id])
           .then((data) => {
             resolve(data);
+            console.log('updated item');
           },(err) => reject(err))
    
 
@@ -203,6 +204,7 @@ delete_details(id){
           db.executeSql(query,[id])
           .then((data) => {
             resolve(data)
+            console.log('deleted item');
           },(err)=>reject(err))
           
  })

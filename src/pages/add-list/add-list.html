@@ -18,7 +18,7 @@
 <button ion-button icon-right icon-only (click)="presentActionSheet()">
   <ion-icon name="create"></ion-icon>
 </button>
-  <img src="{{image}}" onError="this.src='assets/imgs/placeholder.png';"/>
+  <img src="{{image}}" onError="this.src='assets/img/placeholder.png';"/>
  
 
   <ion-card-content>
@@ -34,7 +34,8 @@
   </ion-item>
   <ion-item>
     <ion-label>Quantity Left</ion-label>
-    <ion-input type="number" formControlName = "quantity"></ion-input>
+    <ion-input *ngIf="isIos" type="number" [min]="0" inputmode="numeric" pattern="[0-9*]" formControlName = "quantity"></ion-input>
+    <ion-input *ngIf="isAndroid" type="number" formControlName = "quantity"></ion-input>
   </ion-item>
 
     <ion-item>
