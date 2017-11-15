@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ActionSheetController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ActionSheetController, Platform, LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { DatabaseProvider } from '../../providers/database/database';
 import { HomePage } from '../home/home';
@@ -20,14 +20,14 @@ export class EditPage {
 
   item = [];
   image:any;
-  isIos : boolean;
-  isAndroid : boolean;
+  isIos = false;
+  isAndroid = false;
   oldImage: any;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public alertCtrl: AlertController,
    public actionSheetCtrl: ActionSheetController, public databaseService: DatabaseProvider, public platform: Platform
-   ,public fileService: FileSystemProvider) {
+   ,public fileService: FileSystemProvider, public loadingCtrl : LoadingController) {
 
   this.platform.ready().then(() => {
     this.item[0] = navParams.get('id');
@@ -176,6 +176,7 @@ else{
 
 
 this.navCtrl.pop();
+this.presentLoading();
 this.showAlert();
 
 }
@@ -212,6 +213,7 @@ let confirm = this.alertCtrl.create({
             this.databaseService.delete_details(id).then((result)=>{
               this.navCtrl.setRoot(HomePage);
             });
+            this.presentLoading();
             this.fileService.deleteFile(this.image);
             this.fileService.deleteCacheFile(this.image);
             this.confirmDeleteAlert();
@@ -230,6 +232,14 @@ let confirm = this.alertCtrl.create({
       buttons: ['OK']
     });
     alert.present();
+  }
+
+  presentLoading() {
+    let loader = this.loadingCtrl.create({
+      content: "Please wait...",
+      duration: 3000
+    });
+    loader.present();
   }
 
 }

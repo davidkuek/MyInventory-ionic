@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, Platform, AlertController } from 'ionic-angular';
+import { NavController, ModalController, Platform, AlertController, LoadingController } from 'ionic-angular';
 import { AddListPage } from '../add-list/add-list';
 import { EditPage } from '../edit/edit';
 import { DatabaseProvider } from '../../providers/database/database';
@@ -24,7 +24,8 @@ export class HomePage {
  
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,private platform: Platform,
-   public databaseService: DatabaseProvider, public alertCtrl: AlertController,public fileService: FileSystemProvider) {
+   public databaseService: DatabaseProvider, public alertCtrl: AlertController,public fileService: FileSystemProvider,
+  public loadingCtrl : LoadingController) {
 
 
   this.platform.ready().then(() => {
@@ -92,6 +93,7 @@ let confirm = this.alertCtrl.create({
             this.databaseService.delete_details(id).then((result)=>{
               this.navCtrl.setRoot(HomePage);
             });
+            this.presentLoading();
             this.showAlert();
             console.log('Yes clicked');
           }
@@ -196,5 +198,12 @@ let confirm = this.alertCtrl.create({
     })
   }
 
+  presentLoading() {
+    let loader = this.loadingCtrl.create({
+      content: "Please wait...",
+      duration: 3000
+    });
+    loader.present();
+  }
 
 }

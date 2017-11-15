@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ActionSheetController, Platform} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ActionSheetController, Platform, LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { DatabaseProvider } from '../../providers/database/database';
 import { HomePage } from '../home/home';
@@ -33,7 +33,7 @@ isAndroid = false;
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera,
    public alertCtrl: AlertController,public actionSheetCtrl: ActionSheetController, 
    public databaseService: DatabaseProvider,public fileService: FileSystemProvider,
-   public formBuilder : FormBuilder, public platform : Platform) {
+   public formBuilder : FormBuilder, public platform : Platform, public loadingCtrl : LoadingController) {
   
 
      this.myGroup = formBuilder.group({
@@ -167,6 +167,7 @@ this.navCtrl.setRoot(HomePage);
 });
 this.fileService.copyFile(this.image);
 this.navCtrl.pop();
+this.presentLoading();
 this.showAlert('Done','Your item has been added!',['OK']);
 
 }
@@ -208,6 +209,14 @@ save(){
         
     }
  
+}
+
+presentLoading() {
+  let loader = this.loadingCtrl.create({
+    content: "Please wait...",
+    duration: 3000
+  });
+  loader.present();
 }
 
 
