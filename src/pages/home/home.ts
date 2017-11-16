@@ -93,7 +93,7 @@ let confirm = this.alertCtrl.create({
             this.databaseService.delete_details(id).then((result)=>{
               this.navCtrl.setRoot(HomePage);
             });
-            this.showAlert();
+            this.presentLoading("Please wait", 2000);
             console.log('Yes clicked');
           }
         }
@@ -108,7 +108,6 @@ let confirm = this.alertCtrl.create({
       subTitle: 'Your item has been deleted!',
       buttons: ['OK']
     });
-    this.presentLoading("Please wait", 3000);
     alert.present();
   }
   doInfinite(infiniteScroll) {
