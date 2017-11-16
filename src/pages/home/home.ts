@@ -93,7 +93,6 @@ let confirm = this.alertCtrl.create({
             this.databaseService.delete_details(id).then((result)=>{
               this.navCtrl.setRoot(HomePage);
             });
-            this.presentLoading();
             this.showAlert();
             console.log('Yes clicked');
           }
@@ -109,6 +108,7 @@ let confirm = this.alertCtrl.create({
       subTitle: 'Your item has been deleted!',
       buttons: ['OK']
     });
+    this.presentLoading("Please wait", 3000);
     alert.present();
   }
   doInfinite(infiniteScroll) {
@@ -198,12 +198,16 @@ let confirm = this.alertCtrl.create({
     })
   }
 
-  presentLoading() {
+  presentLoading(msg,time) {
     let loader = this.loadingCtrl.create({
-      content: "Please wait...",
-      duration: 3000
+      content: msg,
+      duration: time
+    });
+    loader.onDidDismiss(() => {
+      this.showAlert();
     });
     loader.present();
   }
+  
 
 }

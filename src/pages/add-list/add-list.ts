@@ -26,7 +26,7 @@ item = [];
 image: any;
 myGroup: FormGroup;
 isIos = false;
-isAndroid = false;
+
 
 
 
@@ -47,14 +47,12 @@ isAndroid = false;
 
 	if (this.platform.is('ios')) {
 		this.isIos = true;
-		this.isAndroid = false;
 		console.log('ios');
 
 	}
-	else if (this.platform.is('android')) {
-		this.isAndroid = true;
+	else {
 		this.isIos = false;
-		console.log('android');
+		console.log('not ios');
 	}
 
 
@@ -71,12 +69,13 @@ isAndroid = false;
 cameraButton(){
 this.camera.getPicture(this.options).then((imageUri) => {
 
-	if (this.isAndroid == true) {
-		this.image = imageUri;
-	}
-	else if (this.isIos == true) {
+if (this.isIos == true) {
 		 this.image = imageUri.replace(/^file:\/\//, '');
-	}
+  }
+  
+else{
+		this.image = imageUri;
+}
 
 
 }, (err) => {
@@ -167,8 +166,8 @@ this.navCtrl.setRoot(HomePage);
 });
 this.fileService.copyFile(this.image);
 this.navCtrl.pop();
-this.presentLoading();
-this.showAlert('Done','Your item has been added!',['OK']);
+this.presentLoading("Please wait", 2000);
+
 
 }
 
@@ -211,11 +210,15 @@ save(){
  
 }
 
-presentLoading() {
+presentLoading(msg,time) {
   let loader = this.loadingCtrl.create({
-    content: "Please wait...",
-    duration: 3000
+    content: msg,
+    duration: time
   });
+  loader.onDidDismiss(() => {
+    this.showAlert('Done','Your item has been added!',['OK']);
+  });
+
   loader.present();
 }
 

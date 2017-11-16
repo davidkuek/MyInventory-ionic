@@ -14,7 +14,6 @@ import { Platform} from 'ionic-angular';
 export class FileSystemProvider {
 
 	isIos = false;
-	isAndroid = false;
 
 
 
@@ -23,15 +22,9 @@ export class FileSystemProvider {
 
     	if (this.platform.is('ios')) {
 		this.isIos = true;
-		this.isAndroid = false;
-		console.log('ios');
-		console.log(this.isIos);
-		console.log(this.isAndroid);
 	}
 	else if (this.platform.is('android')) {
-		this.isAndroid = true;
 		this.isIos = false;
-		console.log('android');
 	}
   }
 
@@ -46,25 +39,30 @@ export class FileSystemProvider {
       console.log('No file to copied');
     }
 
-    else if (this.isAndroid == true) {
-
-  	 path = this.file.externalCacheDirectory;
-  	 fileName = imagePath.split("/").pop("cache");
-  	 newPath = this.file.dataDirectory;
-  	 newFileName = fileName;
-
-    }
-
     else if (this.isIos == true){
     	path = this.file.tempDirectory;
     	fileName = imagePath.split("/").pop("tmp");
     	newPath = this.file.documentsDirectory;
-    	newFileName = fileName;
-    }
+		newFileName = fileName;
+		
+		this.file.copyFile(path, fileName, newPath, newFileName)
+		.then(() => console.log('copied from cache or tmp'))
+		.catch(err => console.log(err))
+	}
+	
+	else{
+			
+		path = this.file.externalCacheDirectory;
+		fileName = imagePath.split("/").pop("cache");
+		newPath = this.file.dataDirectory;
+		newFileName = fileName;
 
-this.file.copyFile(path, fileName, newPath, newFileName)
-.then(() => console.log('copied from cache or tmp'))
-.catch(err => console.log(err))
+		this.file.copyFile(path, fileName, newPath, newFileName)
+		.then(() => console.log('copied from cache or tmp'))
+		.catch(err => console.log(err))
+	}
+
+
 }
 
 
@@ -75,24 +73,26 @@ deleteFile(imagePath){
 
    if (imagePath==undefined) {
       console.log('No file to delete');
-    }
-    else if (this.isAndroid == true) {
-
-  	 path = this.file.dataDirectory;
-  	 fileName = imagePath.split("/").pop("cache");
-
-    }
+   }
 
     else if (this.isIos == true){
     	fileName = imagePath.split("/").pop("tmp");
-    	path = this.file.documentsDirectory;
+		path = this.file.documentsDirectory;
+		
+		this.file.removeFile(path, fileName)
+		.then(() => console.log('data file deleted'))
+		.catch(err => console.log(err))
     }
 
-  
+	else{
+		path = this.file.dataDirectory;
+		fileName = imagePath.split("/").pop("cache");
 
-this.file.removeFile(path, fileName)
-.then(() => console.log('data file deleted'))
-.catch(err => console.log(err))
+		this.file.removeFile(path, fileName)
+		.then(() => console.log('data file deleted'))
+		.catch(err => console.log(err))
+	}
+  
     }
 
 
@@ -104,21 +104,25 @@ deleteCacheFile(imagePath){
    if (imagePath==undefined) {
       console.log('No cache file to delete');
     }
-    else if (this.isAndroid == true) {
-
-  	 path = this.file.externalCacheDirectory;
-  	 fileName = imagePath.split("/").pop("cache");
-
-    }
 
     else if (this.isIos == true){
     	path = this.file.tempDirectory;
     	fileName = imagePath.split("/").pop("tmp");
 
-    }
-this.file.removeFile(path, fileName)
-.then(() => console.log('cache or tmp file deleted'))
-.catch(err => console.log(err))
+		this.file.removeFile(path, fileName)
+		.then(() => console.log('cache or tmp file deleted'))
+		.catch(err => console.log(err))
+	}
+	
+	else{
+		path = this.file.externalCacheDirectory;
+		fileName = imagePath.split("/").pop("cache");
+
+		this.file.removeFile(path, fileName)
+		.then(() => console.log('cache or tmp file deleted'))
+		.catch(err => console.log(err))
+	}
+
     
 } 
 

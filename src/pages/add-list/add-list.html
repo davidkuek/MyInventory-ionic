@@ -35,7 +35,7 @@
   <ion-item>
     <ion-label>Quantity Left</ion-label>
     <ion-input *ngIf="isIos" type="number" pattern="[0-9]*" formControlName = "quantity"></ion-input>
-    <ion-input *ngIf="isAndroid" type="number" formControlName = "quantity"></ion-input>
+    <ion-input *ngIf="!isIos" type="number" formControlName = "quantity"></ion-input>
   </ion-item>
 
     <ion-item>

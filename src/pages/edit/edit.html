@@ -33,7 +33,7 @@
     <ion-item>
       <ion-label>Quantity Left</ion-label>
       <ion-input *ngIf="isIos" type="number" [(ngModel)]="item[2]" pattern="[0-9]*"></ion-input>
-      <ion-input *ngIf="isAndroid" type="number" [(ngModel)]="item[2]"></ion-input>
+      <ion-input *ngIf="!isIos" type="number" [(ngModel)]="item[2]"></ion-input>
     </ion-item>
   
       <ion-item>

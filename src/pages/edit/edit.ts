@@ -21,7 +21,6 @@ export class EditPage {
   item = [];
   image:any;
   isIos = false;
-  isAndroid = false;
   oldImage: any;
 
 
@@ -43,14 +42,12 @@ export class EditPage {
 
 	if (this.platform.is('ios')) {
 		this.isIos = true;
-		this.isAndroid = false;
 		console.log('ios');
 
 	}
 	else if (this.platform.is('android')) {
-		this.isAndroid = true;
 		this.isIos = false;
-		console.log('android');
+		console.log('not ios');
 	}
 
   }
@@ -66,12 +63,14 @@ export class EditPage {
 cameraButton(){
 
 this.camera.getPicture(this.options).then((imageUri) => {
-	if (this.isAndroid == true) {
-		this.image = imageUri;
-	}
-	else if (this.isIos == true) {
+
+	if (this.isIos == true) {
 		 this.image = imageUri.replace(/^file:\/\//, '');
-	}
+  }
+  
+  else{
+      this.image = imageUri;
+  }
 
 
 }, (err) => {
@@ -176,8 +175,8 @@ else{
 
 
 this.navCtrl.pop();
-this.presentLoading();
-this.showAlert();
+this.presentLoading("Please wait",3000,1);
+
 
 }
 
@@ -213,10 +212,9 @@ let confirm = this.alertCtrl.create({
             this.databaseService.delete_details(id).then((result)=>{
               this.navCtrl.setRoot(HomePage);
             });
-            this.presentLoading();
             this.fileService.deleteFile(this.image);
             this.fileService.deleteCacheFile(this.image);
-            this.confirmDeleteAlert();
+            this.presentLoading("Please wait",3000, 2);
             console.log('Yes clicked');
           }
         }
@@ -234,12 +232,26 @@ let confirm = this.alertCtrl.create({
     alert.present();
   }
 
-  presentLoading() {
+
+  presentLoading(msg,time,alert) {
+    
     let loader = this.loadingCtrl.create({
-      content: "Please wait...",
-      duration: 3000
+      content: msg,
+      duration: time
+    });
+    
+    loader.onDidDismiss(() => {
+      if(alert == 1){
+        this.showAlert();
+      }
+      else if(alert == 2){
+        this.confirmDeleteAlert();
+      }
     });
     loader.present();
   }
+
+
+  
 
 }
